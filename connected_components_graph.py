@@ -1,0 +1,121 @@
+class Vertex:
+	def __init__(self,dist=(-1),col=(-1),par=None):
+		self.dist=dist
+		self.col=col
+		self.par=par
+
+class Queue:
+	def __init__(self):
+		self.T=[]
+	def enqueue(self,x):
+		self.T.append(x)
+
+	def dequeue(self):
+		return self.T.pop(0)
+	def Empty(self):
+		if len(self.T)==0:
+			return False
+		return True
+
+class Node:
+	def __init__(self,val=None):
+		self.val=val
+		self.next=None
+
+
+def insert(T,t1,t2):
+	if T[t1.val] is None:
+		T[t1.val]=t2
+	else:
+		current=T[t1.val]
+		prev=current
+		while current is not None:
+			prev=current
+			current=current.next
+		prev.next=t2
+
+def printList(T,n):
+	for i in range(len(T)):
+		print("Vertex ",i ,":",end=" ")
+		current=T[i]
+		while current is not None:
+			print(current.val,end=" ")
+			current=current.next
+		print()
+
+				
+def main():
+	n=int(input("Enter the number of vertices: "))
+	T=[None]*n
+	O=[0]*n
+	temp=Vertex()
+	i=0
+	U=[None]*n
+	while i<n:
+		U[i]=Vertex()
+		i=i+1
+	p=int(input("Enter no. of Edges: "))
+	count=0
+	m=p
+	A=[None]*n
+	B=[]
+	Q=Queue()
+	for i in range(n):
+		A[i]=[0]*n
+	i=0
+	while i<p:
+		l=input()
+		l=l.split()
+		t1=Node(int(l[0]))
+		t2=Node(int(l[1]))
+		insert(T,t1,t2)
+		insert(T,t2,t1)
+		i=i+1
+	j=0
+	while j<n:
+		if O[j]==0:
+			count=count+1
+			ch=j
+			Q.enqueue(ch)
+			U[ch].dist=0
+			while Q.Empty():
+				t=Q.dequeue()
+				current=T[t]
+				if T[t] is None:
+					O[t]=count
+				while current is not None:
+					if U[current.val].col==-1:
+						U[current.val].col=0
+						U[current.val].par=t
+						U[current.val].dist=U[t].dist+1
+						Q.enqueue(current.val)
+						current=current.next
+					else:
+						current=current.next
+					U[t].col=1
+					O[t]=count
+
+		j=j+1
+	i=0
+	print("Total Number of components in the given graph is ",count)
+	while i<count:
+		j=0
+		print("Component-",(i+1),"  ",end="")
+		while j<n:
+			if O[j]==i+1:
+				print(j,end=" ")
+				j=j+1
+			else:
+				j=j+1
+				continue
+		print()
+		i=i+1
+
+
+
+
+	
+
+	
+if __name__=='__main__':
+	main()
